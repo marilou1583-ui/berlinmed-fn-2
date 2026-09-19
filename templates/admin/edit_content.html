@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Content | BerlinMed Admin</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-page {
+            min-height: 100vh;
+            background-color: #f5f7fa;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #0084d6, #00a651);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-header h1 i {
+            margin-right: 10px;
+        }
+
+        .admin-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .admin-form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, #0084d6, #00a651);
+            color: white;
+            padding: 25px 30px;
+        }
+
+        .form-header h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-header h2 i {
+            margin-right: 10px;
+        }
+
+        .form-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 99%;
+            padding: 14px 18px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #0084d6;
+            box-shadow: 0 0 0 3px rgba(0,132,214,0.1);
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 220px;
+            resize: vertical;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-cancel {
+            padding: 14px 28px;
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-cancel:hover {
+            background: #e9ecef;
+            border-color: #d4d9e2;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #0084d6, #00a651);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,132,214,0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .admin-container {
+                margin: 15px auto;
+                padding: 0 15px;
+            }
+
+            .form-body {
+                padding: 20px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn-cancel,
+            .btn-submit {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <div class="container">
+            <h1><i class="fas fa-file-lines"></i> Manage Content</h1>
+        </div>
+    </header>
+
+    <div id="flash-messages" style="max-width: 800px; margin: 20px auto 0; padding: 0 20px; display: none;"></div>
+
+    <section class="admin-page">
+        <div class="admin-container">
+            <div class="admin-form-card">
+                <div class="form-header">
+                    <h2><i class="fas fa-address-card"></i> About Us Page</h2>
+                </div>
+
+                <div class="form-body">
+                    <form onsubmit="return handleSaveContent(event)">
+                        <div class="form-group">
+                            <label for="title">Page Title *</label>
+                            <input type="text" id="title" name="title" required placeholder="Enter page title">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="body">Page Content *</label>
+                            <textarea id="body" name="body" required placeholder="Separate paragraphs with a blank line"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="/admin" class="btn-cancel">Cancel</a>
+                            <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Save Content</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/script.js"></script>
+    <script>
+        function showFlash(message, isError) {
+            const el = document.getElementById('flash-messages');
+            el.style.display = 'block';
+            el.innerHTML = `
+                <div style="padding: 15px 20px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid; background: ${isError ? '#f8d7da' : '#d4edda'}; color: ${isError ? '#721c24' : '#155724'}; border-left-color: ${isError ? '#dc3545' : '#28a745'}; font-weight: 500;">
+                    <i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> ${escapeHtml(message)}
+                </div>
+            `;
+        }
+
+        async function loadContent() {
+            const sessionRes = await API.checkSession();
+            if (!sessionRes.data.admin) {
+                window.location.href = '/login';
+                return;
+            }
+
+            const { ok, data } = await API.getPage('about');
+            if (ok && data) {
+                document.getElementById('title').value = data.title;
+                document.getElementById('body').value = data.body;
+            }
+        }
+
+        async function handleSaveContent(event) {
+            event.preventDefault();
+
+            const sessionRes = await API.checkSession();
+            if (!sessionRes.data.admin) {
+                window.location.href = '/login';
+                return false;
+            }
+
+            const title = document.getElementById('title').value;
+            const body = document.getElementById('body').value;
+
+            const { ok, data } = await API.updatePage('about', title, body);
+
+            if (ok) {
+                showFlash('Content saved successfully!');
+            } else {
+                showFlash(data.error || 'Failed to save content', true);
+            }
+            return false;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadContent);
+    </script>
+</body>
+
+</html>
