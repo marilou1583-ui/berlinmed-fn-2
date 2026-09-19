@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product | BerlinMed Admin</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-page {
+            min-height: 100vh;
+            background-color: #f5f7fa;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #0084d6, #00a651);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-header h1 i {
+            margin-right: 10px;
+        }
+
+        .admin-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .admin-form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, #0084d6, #00a651);
+            color: white;
+            padding: 25px 30px;
+        }
+
+        .form-header h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-header h2 i {
+            margin-right: 10px;
+        }
+
+        .form-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 99%;
+            padding: 14px 18px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #0084d6;
+            box-shadow: 0 0 0 3px rgba(0,132,214,0.1);
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-cancel {
+            padding: 14px 28px;
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-cancel:hover {
+            background: #e9ecef;
+            border-color: #d4d9e2;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #0084d6, #00a651);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,132,214,0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .image-preview-message {
+            text-align: center;
+            padding: 30px 20px;
+            color: #666;
+            border-radius: 10px;
+            border: 2px dashed #eee;
+            margin-top: 15px;
+        }
+
+        .image-preview-message i {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+
+        .image-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .image-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #eee;
+            aspect-ratio: 1 / 1;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-card .remove-image-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .image-card .remove-image-btn:hover {
+            background: #dc3545;
+        }
+
+        .flash-messages {
+            margin-bottom: 25px;
+        }
+
+        .flash-message {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid;
+        }
+
+        .flash-message.success {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+
+        .flash-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+
+        @media (max-width: 600px) {
+            .admin-container {
+                margin: 15px auto;
+                padding: 0 15px;
+            }
+
+            .form-body {
+                padding: 20px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn-cancel,
+            .btn-submit {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="container">
+            <h1><i class="fas fa-plus-circle"></i> Add New Product</h1>
+        </div>
+    </header>
+
+    <!-- Flash Messages -->
+    <div id="flash-messages" style="max-width: 800px; margin: 20px auto 0; padding: 0 20px; display: none;"></div>
+
+    <!-- Main Content -->
+    <section class="admin-page">
+        <div class="admin-container">
+            <div class="admin-form-card">
+                <div class="form-header">
+                    <h2><i class="fas fa-box"></i> Create New Product</h2>
+                </div>
+
+                <div class="form-body">
+                    <form onsubmit="return handleAddProduct(event)" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="name">Product Name *</label>
+                            <input type="text" id="name" name="name" required placeholder="Enter product name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Product Description *</label>
+                            <textarea id="description" name="description" placeholder="Describe the product in detail"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price">Price (USD) *</label>
+                            <input type="number" id="price" name="price" step="0.01" min="0" required placeholder="Enter price in USD">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="stock">Available Stock *</label>
+                            <input type="number" id="stock" name="stock" min="0" required value="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="images">Product Images * (at least 1 required)</label>
+                            <div style="background: #f8fbff; border: 1px dashed #0084d6; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; color: #0f4c81; font-size: 14px;">
+                                <i class="fas fa-info-circle" style="margin-right: 6px;"></i>
+                                You can select multiple images, paste one with Ctrl+V, or add more anytime.
+                            </div>
+                            <input type="file" id="images" name="images" accept="image/*" multiple>
+                            <div id="imagePreview">
+                                <div class="image-preview-message" id="imagePreviewEmpty">
+                                    <i class="fas fa-image"></i>
+                                    <p>No images chosen</p>
+                                </div>
+                                <div class="image-cards-grid" id="imageCardsGrid"></div>
+                            </div>
+                            <small>Allowed formats: JPG, PNG, GIF (Max 5MB per image).</small>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="/admin" class="btn-cancel">Cancel</a>
+                            <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Save Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/script.js"></script>
+    <script>
+        const imageInput = document.getElementById('images');
+        const emptyMessage = document.getElementById('imagePreviewEmpty');
+        const cardsGrid = document.getElementById('imageCardsGrid');
+        let selectedImageFiles = [];
+
+        function renderPreview() {
+            if (selectedImageFiles.length === 0) {
+                emptyMessage.style.display = 'block';
+                cardsGrid.innerHTML = '';
+                return;
+            }
+
+            emptyMessage.style.display = 'none';
+            cardsGrid.innerHTML = selectedImageFiles.map((file, index) => `
+                <div class="image-card">
+                    <img src="${URL.createObjectURL(file)}" alt="Preview ${index + 1}">
+                    <button type="button" class="remove-image-btn" data-index="${index}" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addImageFiles(files) {
+            for (const file of files) {
+                if (file && file.type.startsWith('image/')) {
+                    selectedImageFiles.push(file);
+                }
+            }
+            renderPreview();
+        }
+
+        cardsGrid.addEventListener('click', function(e) {
+            const btn = e.target.closest('.remove-image-btn');
+            if (!btn) return;
+            const index = Number(btn.dataset.index);
+            selectedImageFiles.splice(index, 1);
+            renderPreview();
+        });
+
+        imageInput.addEventListener('change', function(e) {
+            addImageFiles(Array.from(e.target.files || []));
+            imageInput.value = '';
+        });
+
+        document.addEventListener('paste', function(e) {
+            const clipboardItems = e.clipboardData ? Array.from(e.clipboardData.items || []) : [];
+            const imageItem = clipboardItems.find(item => item.type.startsWith('image/'));
+
+            if (!imageItem) {
+                return;
+            }
+
+            e.preventDefault();
+            const file = imageItem.getAsFile();
+            if (file) {
+                addImageFiles([file]);
+            }
+        });
+
+        function showFlash(message, isError) {
+            const el = document.getElementById('flash-messages');
+            el.style.display = 'block';
+            el.innerHTML = `
+                <div style="padding: 15px 20px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid; background: ${isError ? '#f8d7da' : '#d4edda'}; color: ${isError ? '#721c24' : '#155724'}; border-left-color: ${isError ? '#dc3545' : '#28a745'}; font-weight: 500;">
+                    <i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> ${message}
+                </div>
+            `;
+        }
+
+        async function handleAddProduct(event) {
+            event.preventDefault();
+
+            // Check session first
+            const sessionRes = await API.checkSession();
+            if (!sessionRes.data.admin) {
+                window.location.href = '/login';
+                return false;
+            }
+
+            if (selectedImageFiles.length === 0) {
+                showFlash('Please add at least one product image.', true);
+                return false;
+            }
+
+            const formData = new FormData();
+            formData.append('name', document.getElementById('name').value);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('price', document.getElementById('price').value);
+            formData.append('stock', document.getElementById('stock').value);
+
+            for (const file of selectedImageFiles) {
+                formData.append('images', file);
+            }
+
+            const { ok, data } = await API.addProduct(formData);
+            
+            if (ok) {
+                showFlash('Product added successfully!');
+                setTimeout(() => { window.location.href = '/admin'; }, 1000);
+            } else {
+                showFlash(data.error || 'Failed to add product', true);
+            }
+            return false;
+        }
+    </script>
+</body>
+
+</html>

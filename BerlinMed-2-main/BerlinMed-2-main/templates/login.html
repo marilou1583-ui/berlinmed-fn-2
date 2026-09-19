@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="api-base-url" content="">
+    <title>Login | BerlinMed</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <h2>BerlinMed</h2>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/products" class="active">Products</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                </ul>
+            </nav>
+
+            <div class="icons">
+                <a href="/cart" title="Shopping Cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </a>
+                <a href="/login" title="Login">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+            </div>
+
+            <button class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <section class="login-page">
+
+        <div class="login-box">
+
+            <h2>Login</h2>
+
+            <div id="login-error" style="display: none; background: #f8d7da; color: #721c24; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #dc3545;"></div>
+
+            <form id="login-form">
+
+                <div class="input-box">
+
+                    <label>Username</label>
+
+                    <input type="text" name="username" id="login-username" placeholder="Enter username" required>
+
+                </div>
+
+                <div class="input-box">
+
+                    <label>Password</label>
+
+                    <input type="password" name="password" id="login-password" placeholder="********" required>
+
+                </div>
+
+                <button type="button" id="login-btn" onclick="doLogin()">Login</button>
+
+            </form>
+
+        </div>
+
+    </section>
+    <script src="/static/js/api.js"></script>
+    <script src="/script.js"></script>
+    <script>
+        function doLogin() {
+            var username = document.getElementById('login-username').value;
+            var password = document.getElementById('login-password').value;
+            var errorEl = document.getElementById('login-error');
+
+            if (!username || !password) {
+                errorEl.textContent = 'Please enter username and password';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            var btn = document.getElementById('login-btn');
+            btn.disabled = true;
+            btn.textContent = 'Logging in...';
+
+            API.login(username, password).then(function(result) {
+                btn.disabled = false;
+                btn.textContent = 'Login';
+                if (result.ok) {
+                    window.location.href = '/admin';
+                } else {
+                    errorEl.textContent = result.data.error || 'Invalid Login';
+                    errorEl.style.display = 'block';
+                }
+            }).catch(function() {
+                btn.disabled = false;
+                btn.textContent = 'Login';
+                errorEl.textContent = 'Network error';
+                errorEl.style.display = 'block';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('login-form').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    doLogin();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

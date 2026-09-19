@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | BerlinMed</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+    <header>
+
+        <div class="container">
+
+            <div class="logo">
+
+                <i class="fa-solid fa-heart-pulse"></i>
+                <h2>BerlinMed</h2>
+
+            </div>
+
+            <nav>
+
+                <ul>
+
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/products">Products</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+
+                </ul>
+
+            </nav>
+
+            <div class="icons">
+                <a href="/cart" title="Shopping Cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </a>
+                <a href="/login" title="Login">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+            </div>
+
+            <button class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+
+    </header>
+
+    <section class="page-header">
+
+        <div class="overlay"></div>
+
+        <div class="page-title">
+
+            <h1>About Us</h1>
+
+            <p>Your trusted partner in the world of medical devices and equipment</p>
+
+        </div>
+
+    </section>
+
+    <section class="about-section">
+
+        <div class="container about-grid">
+
+            <div class="about-image">
+
+                <img src="/static/images/about.jpg" alt="BerlinMed">
+
+            </div>
+
+            <div class="about-content">
+
+                <h2 id="about-title">BerlinMed</h2>
+
+                <div id="about-body"></div>
+
+                <div class="about-box">
+
+                    <div>
+                        <i class="fa-solid fa-microscope"></i>
+                        <h3>High Quality</h3>
+                        <p>Curated products from the best global companies.</p>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-user-doctor"></i>
+                        <h3>Medical Expertise</h3>
+                        <p>Solutions tailored to the needs of the medical sector.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="mission">
+
+        <div class="container">
+
+            <div class="mission-card">
+                <i class="fa-solid fa-bullseye"></i>
+                <h2>Our Vision</h2>
+                <p>
+                    To become a leading company in providing modern medical technology.
+                </p>
+            </div>
+
+            <div class="mission-card">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+                <h2>Our Mission</h2>
+                <p>
+                    Deliver reliable medical products with excellent service
+                    and continuous customer support.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer>
+
+        <div class="copyright">
+            <p>&copy; 2026 BerlinMed. All Rights Reserved.</p>
+        </div>
+
+    </footer>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { ok, data } = await API.getPage('about');
+            if (!ok || !data) return;
+
+            document.getElementById('about-title').textContent = data.title;
+
+            const bodyEl = document.getElementById('about-body');
+            bodyEl.innerHTML = data.body
+                .split(/\n\s*\n/)
+                .map(paragraph => `<p>${escapeHtml(paragraph.trim())}</p>`)
+                .join('');
+        });
+    </script>
+</body>
+
+</html>
+

@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-Limiter
+python-dotenv
+pg8000
+PyJWT
+gunicorn
+Pillow
+requests
